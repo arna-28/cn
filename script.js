@@ -1,10 +1,11 @@
 /* 
 	Author : Samyak Jain
 	Created on : 30 June 2020
+	Modified to include Run-Length Encoding (RLE)
 */
 // import { Codec } from "./codec_implementation.js";
 
-/// min heap implementation 
+/// Min heap implementation 
 class MinHeap {
 	constructor() {
 		this.heap_array = [];
@@ -104,7 +105,34 @@ class MinHeap {
 	}
 }
 
-/// coder decoder class
+/// Run-Length Encoding (RLE) function
+function runLengthEncode(data) {
+	let encodedData = "";
+	let count = 1;
+
+	for (let i = 0; i < data.length; i++) {
+		if (data[i] === data[i + 1]) {
+			count++;
+		} else {
+			encodedData += data[i] + count.toString();
+			count = 1;
+		}
+	}
+	return encodedData;
+}
+
+/// Run-Length Decoding (RLE) function
+function runLengthDecode(encodedData) {
+	let decodedData = "";
+	for (let i = 0; i < encodedData.length; i += 2) {
+		let char = encodedData[i];
+		let count = parseInt(encodedData[i + 1]);
+		decodedData += char.repeat(count);
+	}
+	return decodedData;
+}
+
+/// Coder decoder class
 class Codec {
 	// constructor() {
 	//     this.codes = {};
@@ -125,13 +153,14 @@ class Codec {
 		this.getCodes(node[1][1], curr_code + '1');
 	}
 
-	/// make the humffman tree into a string
+	/// make the huffman tree into a string
 	make_string(node) {
 		if (typeof (node[1]) === "string") {
 			return "'" + node[1];
 		}
 		return '0' + this.make_string(node[1][0]) + '1' + this.make_string(node[1][1]);
 	}
+
 	/// make string into huffman tree
 	make_tree(tree_string) {
 		let node = [];
@@ -148,18 +177,22 @@ class Codec {
 		return node;
 	}
 
-	/// encoder function
+	/// encoder function with RLE
 	encode(data) {
+		// Step 1: Apply Run-Length Encoding
+		let rleEncodedData = runLengthEncode(data);
+
+		// Step 2: Apply Huffman Compression
 		this.heap = new MinHeap();
 
 		var mp = new Map();
-		for (let i = 0; i < data.length; i++) {
-			if (mp.has(data[i])) {
-				let foo = mp.get(data[i]);
-				mp.set(data[i], foo + 1);
+		for (let i = 0; i < rleEncodedData.length; i++) {
+			if (mp.has(rleEncodedData[i])) {
+				let foo = mp.get(rleEncodedData[i]);
+				mp.set(rleEncodedData[i], foo + 1);
 			}
 			else {
-				mp.set(data[i], 1);
+				mp.set(rleEncodedData[i], 1);
 			}
 		}
 		if (mp.size === 0) {
@@ -183,10 +216,6 @@ class Codec {
 			this.heap.push([value, key]);
 		}
 
-		/// alternate way
-		// mp.forEach(function (value, key) {
-		//     console.log([value, key]);
-		// })
 		while (this.heap.size() >= 2) {
 			let min_node1 = this.heap.top();
 			this.heap.pop();
@@ -201,8 +230,8 @@ class Codec {
 
 		/// convert data into coded data
 		let binary_string = "";
-		for (let i = 0; i < data.length; i++) {
-			binary_string += this.codes[data[i]];
+		for (let i = 0; i < rleEncodedData.length; i++) {
+			binary_string += this.codes[rleEncodedData[i]];
 		}
 		let padding_length = (8 - (binary_string.length % 8)) % 8;
 		for (let i = 0; i < padding_length; i++) {
@@ -224,7 +253,7 @@ class Codec {
 		return [final_string, output_message];
 	}
 
-	/// decoder function
+	/// decoder function with RLE
 	decode(data) {
 		let k = 0;
 		let temp = "";
@@ -259,7 +288,6 @@ class Codec {
 			}
 			let output_message = "Decompression complete and file sent for download.";
 			return [decoded_data, output_message];
-
 		}
 		data = data.slice(k + 1);
 		let ts_length = parseInt(temp);
@@ -300,7 +328,7 @@ class Codec {
 		binary_string = binary_string.slice(0, -padding_length);
 
 		/// decode the data using binary string and huffman tree
-		let decoded_data = "";
+		let huffmanDecodedData = "";
 		let node = huffman_tree;
 		for (let i = 0; i < binary_string.length; i++) {
 			if (binary_string[i] === '1') {
@@ -311,12 +339,16 @@ class Codec {
 			}
 
 			if (typeof (node[0]) === "string") {
-				decoded_data += node[0];
+				huffmanDecodedData += node[0];
 				node = huffman_tree;
 			}
 		}
+
+		// Step 2: Decode Run-Length Encoding
+		let finalDecodedData = runLengthDecode(huffmanDecodedData);
+
 		let output_message = "Decompression complete and file sent for download.";
-		return [decoded_data, output_message];
+		return [finalDecodedData, output_message];
 	}
 }
 
@@ -413,7 +445,6 @@ window.onload = function () {
 		}
 		fileReader.readAsText(uploadedFile, "UTF-8");
 	}
-
 }
 
 /// changes dom when step 1 and is complete ( step 2 is running)
@@ -448,25 +479,4 @@ function onclickChanges2(secMsg, word) {
 	step3.appendChild(msg3);
 }
 
-/// function to download file
-function myDownloadFile(fileName, text) {
-	let a = document.createElement('a');
-	a.href = "data:application/octet-stream," + encodeURIComponent(text);
-	a.download = fileName;
-	a.click();
-}
-
-/// changed dom when file is downloaded (step 3 complete)
-function ondownloadChanges(outputMsg) {
-	step3.innerHTML = "";
-	let img = document.createElement("img");
-	img.src = "done_icon3.png";
-	img.id = "doneImg";
-	step3.appendChild(img);
-	var br = document.createElement("br");
-	step3.appendChild(br);
-	let msg3 = document.createElement("span");
-	msg3.className = "text2";
-	msg3.innerHTML = outputMsg;
-	step3.appendChild(msg3);
-}
+/// function to
