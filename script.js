@@ -420,7 +420,7 @@ window.onload = function () {
 function onclickChanges(firstMsg, step) {
 	step.innerHTML = "";
 	let img = document.createElement("img");
-	img.src = "assets/done_icon3.png";
+	img.src = "done_icon3.png";
 	img.id = "doneImg";
 	step.appendChild(img);
 	var br = document.createElement("br");
@@ -460,7 +460,7 @@ function myDownloadFile(fileName, text) {
 function ondownloadChanges(outputMsg) {
 	step3.innerHTML = "";
 	let img = document.createElement("img");
-	img.src = "assets/done_icon3.png";
+	img.src = "done_icon3.png";
 	img.id = "doneImg";
 	step3.appendChild(img);
 	var br = document.createElement("br");
