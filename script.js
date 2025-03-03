@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('submitbtn').onclick = function () {
         console.log("Submit button clicked!"); // Debugging statement
         const uploadedFile = document.getElementById('uploadfile').files[0];
+        console.log("Uploaded file:", uploadedFile); // Debugging statement
+
         if (uploadedFile === undefined) {
             alert("No file uploaded.\nPlease upload a valid file and try again!");
             return;
@@ -98,6 +100,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Modify the Encode Button Logic
     document.getElementById('encode').onclick = function () {
         const uploadedFile = document.getElementById('uploadfile').files[0];
+        console.log("Uploaded file in encode:", uploadedFile); // Debugging statement
+
         if (uploadedFile === undefined) {
             alert("No file uploaded.\nPlease upload a file and try again!");
             return;
@@ -130,6 +134,38 @@ document.addEventListener('DOMContentLoaded', function () {
                 myDownloadFile(uploadedFile.name.split('.')[0] + "_compressed.jpg", compressedFile);
                 ondownloadChanges("Image compression complete and file sent for download.");
             });
+        }
+    };
+
+    // Modify the Decode Button Logic
+    document.getElementById('decode').onclick = function () {
+        const uploadedFile = document.getElementById('uploadfile').files[0];
+        console.log("Uploaded file in decode:", uploadedFile); // Debugging statement
+
+        if (uploadedFile === undefined) {
+            alert("No file uploaded.\nPlease upload a file and try again!");
+            return;
+        }
+        if (isSubmitted === false) {
+            alert("File not submitted.\nPlease click the submit button on the previous step\nto submit the file and try again!");
+            return;
+        }
+
+        const extension = uploadedFile.name.split('.').pop().toLowerCase();
+        if (extension === 'txt') {
+            // Existing text decompression logic
+            onclickChanges("Done!! Your file will be Decompressed", step2);
+            onclickChanges2("Decompressing your file ...", "Decompressed");
+            const fileReader = new FileReader();
+            fileReader.onload = function (fileLoadedEvent) {
+                const text = fileLoadedEvent.target.result;
+                const [decodedString, outputMsg] = codecObj.decode(text);
+                myDownloadFile(uploadedFile.name.split('.')[0] + "_decompressed.txt", decodedString);
+                ondownloadChanges(outputMsg);
+            };
+            fileReader.readAsText(uploadedFile, "UTF-8");
+        } else {
+            alert("Invalid file type for decompression.\nPlease upload a valid .txt file and try again!");
         }
     };
 });
