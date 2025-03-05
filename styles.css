@@ -1,6 +1,6 @@
 * {
-    background-color: #e9eff5;
-    color: #243447;
+    background-color: #e9eff5; /* Light gray-blue background for a techy vibe */
+    color: #243447; /* Dark slate blue for main text */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
@@ -8,14 +8,14 @@
 }
 
 h2 {
-    color: #1c3a5f;
+    color: #1c3a5f; /* Dark blue for primary headings */
     font-style: italic;
     text-align: center;
     margin-bottom: 10px;
 }
 
 h3 {
-    color: #2e5987;
+    color: #2e5987; /* Medium blue for subheadings */
     font-weight: bold;
     text-align: center;
     text-decoration: underline;
@@ -26,7 +26,7 @@ h3 {
     text-align: center;
     font-size: 1.8em;
     padding: 20px;
-    background-color: #1c3a5f;
+    background-color: #1c3a5f; /* Dark blue background */
     color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -41,7 +41,7 @@ h3 {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     margin: 15px auto;
-    border-left: 5px solid #1c3a5f;
+    border-left: 5px solid #1c3a5f; /* Dark blue accent */
     width: 90%;
 }
 
@@ -49,14 +49,14 @@ h3 {
     width: 85%;
     margin: 30px auto;
     padding: 25px;
-    background-color: #eef3fa;
+    background-color: #eef3fa; /* Very light blue for main container */
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 .links {
-    color: #174a7c;
-    background-color: #dde9f6;
+    color: #174a7c; /* Slightly brighter blue for links */
+    background-color: #dde9f6; /* Soft blue background */
     font-family: 'Georgia', serif;
     font-size: 1.1rem;
     text-align: center;
@@ -70,7 +70,7 @@ h3 {
 
 .links:hover {
     color: #ffffff;
-    background-color: #1c3a5f;
+    background-color: #1c3a5f; /* Dark blue on hover */
 }
 
 .form {
@@ -89,20 +89,20 @@ h3 {
     margin: 10px auto;
     width: 75%;
     border-radius: 5px;
-    border: 1px solid #1c3a5f;
+    border: 1px solid #1c3a5f; /* Dark blue border */
     box-sizing: border-box;
     transition: border-color 0.3s ease;
 }
 
 .input:focus {
-    border-color: #2e5987;
+    border-color: #2e5987; /* Slightly brighter blue on focus */
 }
 
 .button {
     font-size: 1rem;
     font-weight: bold;
     color: #ffffff;
-    background-color: #1c3a5f;
+    background-color: #1c3a5f; /* Dark blue for buttons */
     padding: 10px 25px;
     border-radius: 6px;
     border: none;
@@ -112,7 +112,7 @@ h3 {
 }
 
 .button:hover {
-    background-color: #14314a;
+    background-color: #14314a; /* Even darker blue on hover */
 }
 
 .text, .text2 {
@@ -126,7 +126,7 @@ h3 {
     font-size: 0.9rem;
     text-align: center;
     display: block;
-    color: #2e5987;
+    color: #2e5987; /* Bright blue for footer link */
     text-decoration: underline;
     margin: 15px auto;
 }
@@ -137,52 +137,20 @@ h3 {
     display: block;
 }
 
-/* Slider Styles */
 #imageCompressionOptions {
-    margin-top: 20px;
+    margin-top: 15px;
     text-align: center;
 }
 
 #qualitySlider {
-    width: 80%;
-    margin: 10px auto;
-    -webkit-appearance: none;
-    appearance: none;
-    height: 8px;
-    background: #dde9f6;
-    border-radius: 5px;
-    outline: none;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-}
-
-#qualitySlider:hover {
-    opacity: 1;
-}
-
-#qualitySlider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: #1c3a5f;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-#qualitySlider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: #1c3a5f;
-    border-radius: 50%;
-    cursor: pointer;
+    width: 75%;
+    margin: 10px 0;
 }
 
 #qualityValue {
-    display: inline-block;
-    margin-left: 10px;
-    font-size: 1rem;
-    color: #1c3a5f;
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: #1c3a5f; /* Dark blue for the quality value text */
 }
 
 @media(min-width:740px) {
