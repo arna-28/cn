@@ -320,13 +320,22 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 
 		const extension = uploadedFile.name.split('.').pop().toLowerCase();
-		if (extension === 'txt') {
+		if (extension === 'txt' || extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
 			alert("File submitted!");
 			isSubmitted = true;
 			onclickChanges("Done!! File uploaded!", step1);
+			if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
+				document.getElementById("imageCompressionOptions").style.display = "block";
+			} else {
+				document.getElementById("imageCompressionOptions").style.display = "none";
+			}
 		} else {
-			alert("Invalid file type (." + extension + ") \nPlease upload a valid .txt file and try again!");
+			alert("Invalid file type (." + extension + ") \nPlease upload a valid .txt, .jpg, .jpeg, or .png file and try again!");
 		}
+	};
+
+	document.getElementById('qualitySlider').oninput = function () {
+		document.getElementById('qualityValue').innerText = document.getElementById('qualitySlider').value;
 	};
 
 	// Modify the Encode Button Logic
@@ -353,8 +362,34 @@ document.addEventListener('DOMContentLoaded', function () {
 				ondownloadChanges(outputMsg);
 			};
 			fileReader.readAsText(uploadedFile, "UTF-8");
+		} else if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
+			onclickChanges("Done!! Your image will be Compressed", step2);
+			onclickChanges2("Compressing your image ...", "Compressed");
+			const quality = parseFloat(document.getElementById('qualitySlider').value);
+			const fileReader = new FileReader();
+			fileReader.onload = function (fileLoadedEvent) {
+				const img = new Image();
+				img.src = fileLoadedEvent.target.result;
+				img.onload = function () {
+					const canvas = document.createElement('canvas');
+					const ctx = canvas.getContext('2d');
+					canvas.width = img.width;
+					canvas.height = img.height;
+					ctx.drawImage(img, 0, 0);
+					canvas.toBlob(function (blob) {
+						const url = URL.createObjectURL(blob);
+						const a = document.createElement('a');
+						a.href = url;
+						a.download = uploadedFile.name.split('.')[0] + "_compressed." + extension;
+						a.click();
+						URL.revokeObjectURL(url);
+						ondownloadChanges("Compression complete and image downloading....");
+					}, 'image/jpeg', quality);
+				};
+			};
+			fileReader.readAsDataURL(uploadedFile);
 		} else {
-			alert("Invalid file type for compression.\nPlease upload a valid .txt file and try again!");
+			alert("Invalid file type for compression.\nPlease upload a valid .txt, .jpg, .jpeg, or .png file and try again!");
 		}
 	};
 
@@ -382,6 +417,8 @@ document.addEventListener('DOMContentLoaded', function () {
 				ondownloadChanges(outputMsg);
 			};
 			fileReader.readAsText(uploadedFile, "UTF-8");
+		} else if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
+			alert("Decompression for images is not supported in this version.");
 		} else {
 			alert("Invalid file type for decompression.\nPlease upload a valid .txt file and try again!");
 		}
@@ -405,8 +442,8 @@ function onclickChanges(firstMsg, step) {
 
 /// Function to update the DOM when step 2 is complete
 function onclickChanges2(secMsg, word) {
-	decodeBtn.disabled = true;
-	encodeBtn.disabled = true;
+	document.getElementById('encode').disabled = true;
+	document.getElementById('decode').disabled = true;
 	step3.innerHTML = "";
 	let msg2 = document.createElement("span");
 	msg2.className = "text2";
