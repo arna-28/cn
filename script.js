@@ -1,7 +1,3 @@
-/*
-	Author : Samyak Jain
-	Created on : 30 June 2020
-*/
 
 // Min Heap Implementation
 class MinHeap {
