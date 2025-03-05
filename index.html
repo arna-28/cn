@@ -18,42 +18,44 @@
 
 <body>
     <h1 id="heading">COMPRESS OR DE-COMPRESS YOUR FILE IN THREE EASY STEPS!!</h1>
-    <div class="bigdiv">
-        <h2 class="align">STEP 1: UPLOAD YOUR FILE</h2>
-        <div class="align" id="step1">
-            <img src="text_file_icon1.png" id="textImg">
-            <br>
-            <form method="post" enctype="multipart/form-data" class="form" id="fileform">
-                <input type="file" id="uploadfile" class="input" accept=".txt, .jpg, .jpeg, .png">
-                <input type="button" id="submitbtn" class="btn btn-primary" value="Submit">
-            </form>
-            <span id="text1">(.txt, .jpg, .png files only)</span>
-            <br>
-        </div>
-        <h2 class="align">STEP 2: SELECT ACTION</h2>
-        <div class="align" id="step2">
-            <img src="options_icon2.png" id="optionsImg">
-            <br>
-            <button type="button" id="encode" class="btn btn-success">COMPRESS</button>
-            &nbsp or &nbsp;
-            <button type="button" id="decode" class="btn btn-success">DE-COMPRESS</button>
-            <br>
-            <!-- Image Compression Slider -->
-            <div id="imageCompressionOptions" style="display: none;">
-                <label for="qualitySlider">Select Compression Quality (0 = Low, 1 = High):</label>
-                <input type="range" id="qualitySlider" min="0" max="1" step="0.1" value="0.8">
-                <span id="qualityValue">0.8</span>
+    <div class="container">
+        <div class="bigdiv">
+            <h2 class="align">STEP 1: UPLOAD YOUR FILE</h2>
+            <div class="align" id="step1">
+                <img src="text_file_icon1.png" id="textImg">
+                <br>
+                <form method="post" enctype="multipart/form-data" class="form" id="fileform">
+                    <input type="file" id="uploadfile" class="input" accept=".txt, .jpg, .jpeg, .png">
+                    <input type="button" id="submitbtn" class="btn btn-primary" value="Submit">
+                </form>
+                <span id="text1">(.txt, .jpg, .png files only)</span>
+                <br>
             </div>
-        </div>
-        <h2 class="align">STEP 3: SIT BACK AND RELAX</h2>
-        <div class="align" id="step3">
-            <img src="wait_icon1.png" id="waitImg">
+            <h2 class="align">STEP 2: SELECT ACTION</h2>
+            <div class="align" id="step2">
+                <img src="options_icon2.png" id="optionsImg">
+                <br>
+                <button type="button" id="encode" class="btn btn-success">COMPRESS</button>
+                &nbsp or &nbsp;
+                <button type="button" id="decode" class="btn btn-success">DE-COMPRESS</button>
+                <br>
+                <!-- Image Compression Slider -->
+                <div id="imageCompressionOptions" style="display: none;">
+                    <label for="qualitySlider">Select Compression Quality (0 = Low, 1 = High):</label>
+                    <input type="range" id="qualitySlider" min="0" max="1" step="0.1" value="0.8">
+                    <span id="qualityValue">0.8</span>
+                </div>
+            </div>
+            <h2 class="align">STEP 3: SIT BACK AND RELAX</h2>
+            <div class="align" id="step3">
+                <img src="wait_icon1.png" id="waitImg">
+                <br>
+            </div>
             <br>
         </div>
-        <br>
-        <span class="align" id="text4">
+        <div class="align" id="text4">
             <button type="button" class="btn btn-success" onclick="location.reload()">Click Here</button> to Start Again!
-        </span>
+        </div>
     </div>
     <span class="text">
         Want to know more about the compression technique used by this tool?
