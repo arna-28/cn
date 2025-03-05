@@ -1,4 +1,4 @@
-* {
+c* {
     background-color: #e9eff5; /* Light gray-blue background for a techy vibe */
     color: #243447; /* Dark slate blue for main text */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -151,6 +151,21 @@ h3 {
     font-size: 1.2rem;
     margin-top: 10px;
     color: #1c3a5f; /* Dark blue for the quality value text */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure it takes full height */
+}
+
+.bigdiv {
+    flex-grow: 1; /* Pushes the button to the bottom */
+}
+
+#text4 {
+    margin-top: auto; /* Keeps the button at the bottom */
+    text-align: center;
 }
 
 @media(min-width:740px) {
