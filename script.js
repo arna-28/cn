@@ -1,171 +1,211 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Global Variables
-    let isSubmitted = false;
-    const step1 = document.getElementById("step1");
-    const step2 = document.getElementById("step2");
-    const step3 = document.getElementById("step3");
-
-    // Update Slider Value Display
-    const qualitySlider = document.getElementById('qualitySlider');
-    console.log("Slider element:", qualitySlider); // Debugging statement
-
-    if (qualitySlider) {
-        qualitySlider.addEventListener('input', function () {
-            console.log("Slider value changed:", this.value); // Debugging statement
-            document.getElementById('qualityValue').textContent = this.value;
-        });
-    } else {
-        console.error("Slider element (#qualitySlider) not found!");
+class MinHeap {
+    constructor() {
+        this.heap_array = [];
     }
 
-    // Modify the Submit Button Logic
-    document.getElementById('submitbtn').onclick = function () {
-        console.log("Submit button clicked!"); // Debugging statement
-        const uploadedFile = document.getElementById('uploadfile').files[0];
-        console.log("Uploaded file:", uploadedFile); // Debugging statement
-
-        if (uploadedFile === undefined) {
-            alert("No file uploaded.\nPlease upload a valid file and try again!");
-            return;
-        }
-
-        const extension = uploadedFile.name.split('.').pop().toLowerCase();
-        if (extension === 'txt') {
-            alert("File submitted!");
-            isSubmitted = true;
-            onclickChanges("Done!! File uploaded!", step1);
-        } else if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
-            alert("Image file submitted!");
-            isSubmitted = true;
-            onclickChanges("Done!! Image uploaded!", step1);
-            document.getElementById('imageCompressionOptions').style.display = 'block'; // Show the slider
-        } else {
-            alert("Invalid file type (." + extension + ") \nPlease upload a valid .txt, .jpg, or .png file and try again!");
-        }
-    };
-
-    // Function to update the DOM when step 1 is complete
-    function onclickChanges(firstMsg, step) {
-        step.innerHTML = "";
-        let img = document.createElement("img");
-        img.src = "done_icon3.png";
-        img.id = "doneImg";
-        step.appendChild(img);
-        var br = document.createElement("br");
-        step.appendChild(br);
-        let msg = document.createElement("span");
-        msg.className = "text2";
-        msg.innerHTML = firstMsg;
-        step.appendChild(msg);
+    size() {
+        return this.heap_array.length;
     }
 
-    // Function to update the DOM when step 2 is complete
-    function onclickChanges2(secMsg, word) {
-        decodeBtn.disabled = true;
-        encodeBtn.disabled = true;
-        step3.innerHTML = "";
-        let msg2 = document.createElement("span");
-        msg2.className = "text2";
-        msg2.innerHTML = secMsg;
-        step3.appendChild(msg2);
-        let msg3 = document.createElement("span");
-        msg3.className = "text2";
-        msg3.innerHTML = " , " + word + " file will be downloaded automatically!";
-        step3.appendChild(msg3);
+    empty() {
+        return (this.size() === 0);
     }
 
-    // Function to download the file
-    function myDownloadFile(fileName, text) {
-        let a = document.createElement('a');
-        a.href = "data:application/octet-stream," + encodeURIComponent(text);
-        a.download = fileName;
-        a.click();
+    push(value) {
+        this.heap_array.push(value);
+        this.up_heapify();
     }
 
-    // Function to update the DOM when the file is downloaded
-    function ondownloadChanges(outputMsg) {
-        step3.innerHTML = "";
-        let img = document.createElement("img");
-        img.src = "done_icon3.png";
-        img.id = "doneImg";
-        step3.appendChild(img);
-        var br = document.createElement("br");
-        step3.appendChild(br);
-        let msg3 = document.createElement("span");
-        msg3.className = "text2";
-        msg3.innerHTML = outputMsg;
-        step3.appendChild(msg3);
+    up_heapify() {
+        var current_index = this.size() - 1;
+        while (current_index > 0) {
+            var current_element = this.heap_array[current_index];
+            var parent_index = Math.trunc((current_index - 1) / 2);
+            var parent_element = this.heap_array[parent_index];
+
+            if (parent_element[0] < current_element[0]) {
+                break;
+            } else {
+                this.heap_array[parent_index] = current_element;
+                this.heap_array[current_index] = parent_element;
+                current_index = parent_index;
+            }
+        }
     }
 
-    // Modify the Encode Button Logic
-    document.getElementById('encode').onclick = function () {
-        const uploadedFile = document.getElementById('uploadfile').files[0];
-        console.log("Uploaded file in encode:", uploadedFile); // Debugging statement
+    top() {
+        return this.heap_array[0];
+    }
 
-        if (uploadedFile === undefined) {
-            alert("No file uploaded.\nPlease upload a file and try again!");
+    pop() {
+        if (this.empty() == false) {
+            var last_index = this.size() - 1;
+            this.heap_array[0] = this.heap_array[last_index];
+            this.heap_array.pop();
+            this.down_heapify();
+        }
+    }
+
+    down_heapify() {
+        var current_index = 0;
+        var current_element = this.heap_array[0];
+        while (current_index < this.size()) {
+            var child_index1 = (current_index * 2) + 1;
+            var child_index2 = (current_index * 2) + 2;
+            if (child_index1 >= this.size() && child_index2 >= this.size()) {
+                break;
+            } else if (child_index2 >= this.size()) {
+                let child_element1 = this.heap_array[child_index1];
+                if (current_element[0] < child_element1[0]) {
+                    break;
+                } else {
+                    this.heap_array[child_index1] = current_element;
+                    this.heap_array[current_index] = child_element1;
+                    current_index = child_index1;
+                }
+            } else {
+                var child_element1 = this.heap_array[child_index1];
+                var child_element2 = this.heap_array[child_index2];
+                if (current_element[0] < child_element1[0] && current_element[0] < child_element2[0]) {
+                    break;
+                } else {
+                    if (child_element1[0] < child_element2[0]) {
+                        this.heap_array[child_index1] = current_element;
+                        this.heap_array[current_index] = child_element1;
+                        current_index = child_index1;
+                    } else {
+                        this.heap_array[child_index2] = current_element;
+                        this.heap_array[current_index] = child_element2;
+                        current_index = child_index2;
+                    }
+                }
+            }
+        }
+    }
+}
+
+class Codec {
+    encode(data) {
+        this.heap = new MinHeap();
+
+        var mp = new Map();
+        for (let i = 0; i < data.length; i++) {
+            if (mp.has(data[i])) {
+                let foo = mp.get(data[i]);
+                mp.set(data[i], foo + 1);
+            } else {
+                mp.set(data[i], 1);
+            }
+        }
+        if (mp.size === 0) {
+            let final_string = "zer#";
+
+            let output_message = "Compression complete and file sent for download. " + '\n' + "Compression Ratio : " + (data.length / final_string.length).toPrecision(6);
+            return [final_string, output_message];
+        }
+
+        if (mp.size === 1) {
+            let key, value;
+            for (let [k, v] of mp) {
+                key = k;
+                value = v;
+            }
+            let final_string = "one" + '#' + key + '#' + value.toString();
+            let output_message = "Compression complete and file sent for download. " + '\n' + "Compression Ratio : " + (data.length / final_string.length).toPrecision(6);
+            return [final_string, output_message];
+        }
+        for (let [key, value] of mp) {
+            this.heap.push([value, key]);
+        }
+
+        while (this.heap.size() >= 2) {
+            let min_node1 = this.heap.top();
+            this.heap.pop();
+            let min_node2 = this.heap.top();
+            this.heap.pop();
+            this.heap.push([min_node1[0] + min_node2[0], [min_node1, min_node2]]);
+        }
+        var huffman_tree = this.heap.top();
+        this.heap.pop();
+        this.codes = {};
+        this.getCodes(huffman_tree, "");
+
+        let binary_string = "";
+        for (let i = 0; i < data.length; i++) {
+            binary_string += this.codes[data[i]];
+        }
+        let padding_length = (8 - (binary_string.length % 8)) % 8;
+        for (let i = 0; i < padding_length; i++) {
+            binary_string += '0';
+        }
+        let encoded_data = "";
+        for (let i = 0; i < binary_string.length;) {
+            let curr_num = 0;
+            for (let j = 0; j < 8; j++, i++) {
+                curr_num *= 2;
+                curr_num += binary_string[i] - '0';
+            }
+            encoded_data += String.fromCharCode(curr_num);
+        }
+        let tree_string = this.make_string(huffman_tree);
+        let ts_length = tree_string.length;
+        let final_string = ts_length.toString() + '#' + padding_length.toString() + '#' + tree_string + encoded_data;
+        let output_message = "Compression complete and file sent for download. " + '\n' + "Compression Ratio : " + (data.length / final_string.length).toPrecision(6);
+        return [final_string, output_message];
+    }
+
+    decode(data) {
+        let k = 0;
+        let temp = "";
+        while (k < data.length && data[k] != '#') {
+            temp += data[k];
+            k++;
+        }
+        if (k == data.length) {
+            alert("Invalid File!\nPlease submit a valid compressed .txt file to decompress and try again!");
+            location.reload();
             return;
         }
-        if (isSubmitted === false) {
-            alert("File not submitted.\nPlease click the submit button on the previous step\nto submit the file and try again!");
-            return;
+        if (temp === "zer") {
+            let decoded_data = "";
+            let output_message = "Decompression complete and file sent for download.";
+            return [decoded_data, output_message];
         }
+        if (temp === "one") {
+            data = data.slice(k + 1);
+            k = 0;
+            temp = "";
+            while (data[k] != '#') {
+                temp += data[k];
+                k++;
+            }
+            let one_char = temp;
+            data = data.slice(k + 1);
+            let str_len = parseInt(data);
+            let decoded_data = "";
+            for (let i = 0; i < str_len; i++) {
+                decoded_data += one_char;
+            }
+            let output_message = "Decompression complete and file sent for download.";
+            return [decoded_data, output_message];
 
-        const extension = uploadedFile.name.split('.').pop().toLowerCase();
-        if (extension === 'txt') {
-            // Existing text compression logic
-            onclickChanges("Done!! Your file will be Compressed", step2);
-            onclickChanges2("Compressing your file ...", "Compressed");
-            const fileReader = new FileReader();
-            fileReader.onload = function (fileLoadedEvent) {
-                const text = fileLoadedEvent.target.result;
-                const [encodedString, outputMsg] = codecObj.encode(text);
-                myDownloadFile(uploadedFile.name.split('.')[0] + "_compressed.txt", encodedString);
-                ondownloadChanges(outputMsg);
-            };
-            fileReader.readAsText(uploadedFile, "UTF-8");
-        } else if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
-            // Image compression logic
-            const quality = parseFloat(document.getElementById('qualitySlider').value);
-            compressImage(uploadedFile, quality, function (compressedBlob) {
-                const compressedFile = new File([compressedBlob], uploadedFile.name, {
-                    type: 'image/jpeg', // Use 'image/png' for PNG files
-                });
-                myDownloadFile(uploadedFile.name.split('.')[0] + "_compressed.jpg", compressedFile);
-                ondownloadChanges("Image compression complete and file sent for download.");
-            });
         }
-    };
-
-    // Modify the Decode Button Logic
-    document.getElementById('decode').onclick = function () {
-        const uploadedFile = document.getElementById('uploadfile').files[0];
-        console.log("Uploaded file in decode:", uploadedFile); // Debugging statement
-
-        if (uploadedFile === undefined) {
-            alert("No file uploaded.\nPlease upload a file and try again!");
-            return;
+        data = data.slice(k + 1);
+        let ts_length = parseInt(temp);
+        k = 0;
+        temp = "";
+        while (data[k] != '#') {
+            temp += data[k];
+            k++;
         }
-        if (isSubmitted === false) {
-            alert("File not submitted.\nPlease click the submit button on the previous step\nto submit the file and try again!");
-            return;
+        data = data.slice(k + 1);
+        let padding_length = parseInt(temp);
+        temp = "";
+        for (k = 0; k < ts_length; k++) {
+            temp += data[k];
         }
-
-        const extension = uploadedFile.name.split('.').pop().toLowerCase();
-        if (extension === 'txt') {
-            // Existing text decompression logic
-            onclickChanges("Done!! Your file will be Decompressed", step2);
-            onclickChanges2("Decompressing your file ...", "Decompressed");
-            const fileReader = new FileReader();
-            fileReader.onload = function (fileLoadedEvent) {
-                const text = fileLoadedEvent.target.result;
-                const [decodedString, outputMsg] = codecObj.decode(text);
-                myDownloadFile(uploadedFile.name.split('.')[0] + "_decompressed.txt", decodedString);
-                ondownloadChanges(outputMsg);
-            };
-            fileReader.readAsText(uploadedFile, "UTF-8");
-        } else {
-            alert("Invalid file type for decompression.\nPlease upload a valid .txt file and try again!");
-        }
-    };
-});
+        data = data.slice(k);
+        let tree_string = temp;
+        temp = "";
+        for (k = 0; k < data.length; k++) {
+            temp +=
